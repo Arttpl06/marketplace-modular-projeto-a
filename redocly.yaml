@@ -1,0 +1,6 @@
+extends:
+  - recommended
+rules:
+  security-defined: off
+  # Local academic API intentionally has no authentication.
+  no-server-example.com: off

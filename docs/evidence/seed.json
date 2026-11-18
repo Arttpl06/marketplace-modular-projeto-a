@@ -1,0 +1,41 @@
+{
+  "timestamp": "2026-11-18T18:08:43.808Z",
+  "database": "marketplace_test",
+  "batch": 500,
+  "before": {
+    "produtos": 65,
+    "pedidos": 49,
+    "pedido_itens": 49,
+    "pagamentos": 31,
+    "synthetic_orders": 3,
+    "synthetic_products": 3,
+    "synthetic_payments": 3,
+    "synthetic_items": 3,
+    "synthetic_stock": 29997
+  },
+  "after": {
+    "produtos": 1062,
+    "pedidos": 100046,
+    "pedido_itens": 100046,
+    "pagamentos": 100028,
+    "synthetic_orders": 100000,
+    "synthetic_products": 1000,
+    "synthetic_payments": 100000,
+    "synthetic_items": 100000,
+    "synthetic_stock": 9900000
+  },
+  "repeat": {
+    "produtos": 1062,
+    "pedidos": 100046,
+    "pedido_itens": 100046,
+    "pagamentos": 100028,
+    "synthetic_orders": 100000,
+    "synthetic_products": 1000,
+    "synthetic_payments": 100000,
+    "synthetic_items": 100000,
+    "synthetic_stock": 9900000
+  },
+  "first_ms": 30497.7893,
+  "repeat_ms": 2238.785500000002,
+  "idempotent": true
+}

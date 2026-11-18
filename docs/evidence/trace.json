@@ -1,0 +1,30 @@
+{
+  "captured_at": "2026-11-18T18:10:25.560Z",
+  "database": "marketplace_test",
+  "exporter": "local JSON spans",
+  "spans": [
+    {
+      "timestamp": "2026-11-18T18:10:25.548Z",
+      "event": "trace_span",
+      "trace_id": "e852ddc382eceb7a7d714c2c3643f0b4",
+      "span_id": "d73787ce6adf00de",
+      "parent_span_id": "0f326bd20619c6fa",
+      "name": "mysql.readiness",
+      "kind": "CLIENT",
+      "status": "OK",
+      "duration_ms": 34.61079999999993
+    },
+    {
+      "timestamp": "2026-11-18T18:10:25.552Z",
+      "event": "trace_span",
+      "trace_id": "e852ddc382eceb7a7d714c2c3643f0b4",
+      "span_id": "0f326bd20619c6fa",
+      "parent_span_id": null,
+      "name": "GET /ready",
+      "kind": "SERVER",
+      "status": "OK",
+      "http_status": 200,
+      "duration_ms": 40.03470000000004
+    }
+  ]
+}

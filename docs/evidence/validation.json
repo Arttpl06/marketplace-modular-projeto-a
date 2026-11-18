@@ -1,0 +1,47 @@
+{
+  "date": "2026-11-18",
+  "node": "v22.17.0",
+  "platform": "win32",
+  "tests": 42,
+  "suites": 9,
+  "unitTests": 25,
+  "unitSuites": 4,
+  "inheritedDevelopmentDatabaseGuard": "passed: npm test with DB_NAME=marketplace_db",
+  "coverage": {
+    "lines": {
+      "total": 272,
+      "covered": 267,
+      "skipped": 0,
+      "pct": 98.16
+    },
+    "statements": {
+      "total": 343,
+      "covered": 329,
+      "skipped": 0,
+      "pct": 95.91
+    },
+    "functions": {
+      "total": 77,
+      "covered": 77,
+      "skipped": 0,
+      "pct": 100
+    },
+    "branches": {
+      "total": 200,
+      "covered": 181,
+      "skipped": 0,
+      "pct": 90.5
+    },
+    "branchesTrue": {
+      "total": 0,
+      "covered": 0,
+      "skipped": 0,
+      "pct": 100
+    }
+  },
+  "composeConfig": "passed; containers blocked by engine permission",
+  "githubActions": "YAML parsed; remote not run",
+  "sca": "blocked: npm endpoint inaccessible",
+  "openapiLint": "blocked: CLI download EACCES",
+  "k6": "not installed; comparison not measured"
+}

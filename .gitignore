@@ -1,0 +1,11 @@
+.env.test
+.env
+.env.*
+!.env.example
+node_modules/
+coverage/
+*.log
+performance-results/
+
+!.env.test.example
+!.env.benchmark.example

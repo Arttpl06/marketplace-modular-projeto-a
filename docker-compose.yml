@@ -1,0 +1,108 @@
+services:
+  db:
+    image: mysql:8.4
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "127.0.0.1:3308:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "MYSQL_PWD=$$MYSQL_ROOT_PASSWORD mysqladmin ping -h localhost -u root --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+  migrate:
+    build: .
+    env_file: ${APP_ENV_FILE:-.env}
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+    command: ["npm", "run", "migrate"]
+    depends_on:
+      db:
+        condition: service_healthy
+  app:
+    build: .
+    env_file: ${APP_ENV_FILE:-.env}
+    environment:
+      NODE_ENV: production
+      DB_HOST: db
+      DB_PORT: 3306
+      PORT: 3000
+    ports:
+      - "127.0.0.1:3000:3000"
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:3000/ready').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  worker:
+    build: .
+    env_file: ${APP_ENV_FILE:-.env}
+    environment:
+      NODE_ENV: production
+      DB_HOST: db
+      DB_PORT: 3306
+    command: ["npm", "run", "worker"]
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+  test-db:
+    image: mysql:8.4
+    profiles: ["test"]
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+      MYSQL_DATABASE: marketplace_test
+      MYSQL_USER: ${TEST_DB_USER:-marketplace_test}
+      MYSQL_PASSWORD: ${TEST_DB_PASSWORD:-}
+    tmpfs:
+      - /var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "MYSQL_PWD=$$MYSQL_PASSWORD mysqladmin ping -h localhost -u $$MYSQL_USER --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+  tests:
+    profiles: ["test"]
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    environment:
+      NODE_ENV: test
+      DB_HOST: test-db
+      DB_PORT: 3306
+      DB_NAME: marketplace_test
+      DB_USER: ${TEST_DB_USER:-marketplace_test}
+      DB_PASSWORD: ${TEST_DB_PASSWORD:-}
+    depends_on:
+      test-db:
+        condition: service_healthy
+
+  benchmark-db:
+    image: mysql:8.4
+    profiles: ["benchmark"]
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+      MYSQL_DATABASE: marketplace_benchmark
+      MYSQL_USER: marketplace_benchmark
+      MYSQL_PASSWORD: ${BENCHMARK_DB_PASSWORD:-}
+    ports:
+      - "127.0.0.1:3309:3306"
+    volumes:
+      - benchmark_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "MYSQL_PWD=$$MYSQL_PASSWORD mysqladmin ping -h localhost -u $$MYSQL_USER --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+volumes:
+  mysql_data:
+  benchmark_data:
